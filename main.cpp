@@ -29,6 +29,19 @@ public:
             exit(0); // Exit program if login fails
         }
     }
+    void viewResults() {
+        ifstream inFile("data/score.txt");
+        if (!inFile) {
+            cerr << "Error opening file for reading." << endl;
+            return;
+        }
+        string line;
+        cout << "Results:\n";
+        while (getline(inFile, line)) {
+            cout << line << endl;
+            cout<< "-------------------" << endl;
+        }
+    }
 };
 
 // Student Class
@@ -83,6 +96,16 @@ int main() {
     if (user == 1) {
         Admin admin;
         admin.login();
+        cout << "Admin Menu:\n";
+        cout << "1. View Results\n2. Exit\nEnter your choice: ";
+        int choice;
+        cin >> choice;
+        if (choice == 1) {
+            admin.viewResults();
+        } else {
+            cout << "Exiting...\n";
+            return 0;
+        }
         return 0;
     } else if (user == 2) {
         // Student Login
