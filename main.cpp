@@ -37,7 +37,7 @@ public:
         }
         string line;
         cout << "Results:\n";
-        while (getline(inFile, line)) {
+        while (getline(inFile, line, '.')) {
             cout << line << endl;
             cout<< "-------------------" << endl;
         }
@@ -150,7 +150,7 @@ int main() {
         return 1;
     }
     outFile << "Student: " << s.name << endl;
-    outFile << "Score: " << score << " out of " << quiz.size() << endl;
+    outFile << "Score: " << score << " out of " << quiz.size() << "."<< endl;
     outFile.close();
 
     cout << "Your score has been saved to score.txt\n";
