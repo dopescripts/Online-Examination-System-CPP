@@ -77,7 +77,7 @@ int main() {
     Student s("unknown");
     int user;
     cout << "Welcome to Online Examination System" << endl;
-    cout << "1. Admin Login\n 2. Student Login\n Enter your choice: ";
+    cout << "1. Admin Login\n2. Student Login\nEnter your choice: ";
     cin >> user;
 
     if (user == 1) {
@@ -121,7 +121,11 @@ int main() {
     }
 
     // Save result to file
-    ofstream outFile("score.txt");
+    ofstream outFile("data/score.txt", ios::app);
+    if (!outFile) {
+        cerr << "Error opening file for writing." << endl;
+        return 1;
+    }
     outFile << "Student: " << s.name << endl;
     outFile << "Score: " << score << " out of " << quiz.size() << endl;
     outFile.close();
