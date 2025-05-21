@@ -1,8 +1,8 @@
 Student: Minhaj
-Score: 3 out of 3.
-Student: Mahad
-Score: 3 out of 3.
-Student: sohaib
-Score: 3 out of 3.
-Student: Minhaj
-Score: 2 out of 3.
+Score: 5 out of 5.
+Student: mahad
+Score: 4 out of 5.
+Student: john
+Score: 5 out of 5.
+Student: Sohaib
+Score: 5 out of 5.

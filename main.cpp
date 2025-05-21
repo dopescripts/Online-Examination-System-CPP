@@ -31,8 +31,8 @@ public:
         }
         else
         {
-            cout << "Invalid user name or pass" << endl;
-            exit(0); // Exit program if login fails
+            cout << "Invalid username or password" << endl;
+            return; // Exit program if login fails
         }
     }
     void viewResults()
@@ -58,10 +58,18 @@ class Student : public User
 {
 public:
     string name;
+    Student() {}
     Student(string n) : name(n) {}
     void login() override
     {
         cout << "Student " << name << " logged in.\n";
+    }
+    void inputAndLogin()
+    {
+        cout << "Enter your name (single word): ";
+        cin.ignore();
+        getline(cin, name); // Use getline to allow spaces
+        login();
     }
 };
 
@@ -107,7 +115,7 @@ public:
 
 int main()
 {
-    Student s("unknown");
+    Student s;
     int user;
     cout << "Welcome to Online Examination System" << endl;
     cout << "1. Admin Login\n2. Student Login\nEnter your choice: ";
@@ -135,11 +143,7 @@ int main()
     else if (user == 2)
     {
         // Student Login
-        string studentName;
-        cout << "Enter your name (single word): ";
-        cin >> studentName;
-        s = Student(studentName);
-        s.login();
+        s.inputAndLogin();
     }
     else
     {
@@ -151,8 +155,13 @@ int main()
     quiz.push_back(new MCQ("Q1: What is 2 + 2?\nA) 3\nB) 4\nC) 5", 'B'));
     quiz.push_back(new MCQ("Q2: Capital of France?\nA) London\nB) Paris\nC) Rome", 'B'));
     quiz.push_back(new MCQ("Q3: Which one is a programming language?\nA) Snake\nB) Python\nC) Cobra", 'B'));
+    quiz.push_back(new MCQ("Q4: Which one is a NoSQL DB?\nA) MongoDB\nB) MySQL\nC) PostgreSQL", 'A'));
+    quiz.push_back(new MCQ("Q5: Which one is used to read file in c++?\nA) ofstream()\nB) ifstream()\nC) cin>>", 'B'));
 
     // Start the quiz
+    cout << "Starting the quiz...\n";
+    cout << "Please answer with A, B or C.\nReady?";
+    system("pause");
     char userInput;
     int score = 0;
 
@@ -186,14 +195,15 @@ int main()
     outFile << "Student: " << s.name << endl;
     outFile << "Score: " << score << " out of " << quiz.size() << "." << endl;
     outFile.close();
-
-    cout << "Your score has been saved to score.txt\n";
+    cout << "Your score: " << score << " out of " << quiz.size() << endl;
+    cout << "Your score has been saved! Thank you\n";
 
     // Free memory because we use new
     for (auto q : quiz)
     {
         delete q;
     }
-
+    system("pause");
+    cout << "Exiting...\n";
     return 0;
 }
