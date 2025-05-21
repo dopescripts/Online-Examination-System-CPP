@@ -8,3 +8,5 @@ Student: Sohaib
 Score: 5 out of 5.
 Student: Kashif
 Score: 5 out of 5.
+Student: mahad
+Score: 4 out of 5.
