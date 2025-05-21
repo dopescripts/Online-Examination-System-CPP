@@ -7,55 +7,97 @@
 using namespace std;
 
 // Abstract Base Class
-class User {
+class User
+{
 public:
     virtual void login() = 0; // pure virtual function
 };
 
 // Admin Class
-class Admin : public User {
+class Admin : public User
+{
 public:
-    void login() override {
+    void login() override
+    {
         string username, password;
         cout << "Enter Admin Username: ";
         cin >> username;
         cout << "Enter Admin Password: ";
         cin >> password;
 
-        if (username == "admin" && password == "admin123") {
-            cout << "Admin logged in successfully."<<endl;
-        } else {
-            cout << "Invalid user name or pass"<<endl;
+        if (username == "admin" && password == "admin123")
+        {
+            cout << "Admin logged in successfully." << endl;
+        }
+        else
+        {
+            cout << "Invalid user name or pass" << endl;
             exit(0); // Exit program if login fails
         }
     }
-    void viewResults() {
+    void viewResults()
+    {
         ifstream inFile("data/score.txt");
-        if (!inFile) {
+        if (!inFile)
+        {
             cerr << "Error opening file for reading." << endl;
             return;
         }
         string line;
         cout << "Results:\n";
-        while (getline(inFile, line, '.')) {
+        while (getline(inFile, line, '.'))
+        {
             cout << line << endl;
-            cout<< "-------------------" << endl;
+            cout << "-------------------" << endl;
         }
+    }
+    void addQuestion()
+    {
+        // Add question functionality can be implemented here
+        cout << "Enter a new question: \n";
+        string question;
+        cin.ignore(); // Ignore the newline character left in the buffer
+        getline(cin, question);
+        cout << "Enter the correct answer (A/B/C)(Three options accordingly): " << endl;
+        // Read three options
+        string questionOptions[3];
+        cin.ignore(); // Ignore the newline character left in the buffer
+        for (int i = 0; i < 3; i++)
+        {
+            cin.ignore(); // Ignore the newline character left in the buffer
+            cout << "Option: ";
+            getline(cin, questionOptions[i]);
+        }
+        ofstream outFile("data/questions.txt", ios::app);
+        if (!outFile)
+        {
+            cerr << "Error opening file for writing." << endl;
+            return;
+        }
+        // Write question to file
+        outFile << question << endl;
+        outFile << "A) " << questionOptions[0] << endl;
+        outFile << "B) " << questionOptions[1] << endl;
+        outFile << "C) " << questionOptions[2] << endl;
+        outFile.close();
     }
 };
 
 // Student Class
-class Student : public User {
+class Student : public User
+{
 public:
     string name;
     Student(string n) : name(n) {}
-    void login() override {
+    void login() override
+    {
         cout << "Student " << name << " logged in.\n";
     }
 };
 
 // Abstract Base Question Class
-class Question {
+class Question
+{
 public:
     virtual void ask() = 0;
     virtual char getCorrectAnswer() = 0;
@@ -63,62 +105,83 @@ public:
 };
 
 // MCQ Class, Derived from Question
-class MCQ : public Question {
+class MCQ : public Question
+{
     string text;
     char correctOption;
+
 public:
-    MCQ(string t, char c) : text(t), correctOption(toupper(c)) {}//constructor
-    void ask() override {
+    MCQ(string t, char c) : text(t), correctOption(toupper(c)) {} // constructor
+    void ask() override
+    {
         cout << text << endl;
     }
-    char getCorrectAnswer() override {
+    char getCorrectAnswer() override
+    {
         return correctOption;
     }
 };
 
 // Answer Class with Operator Overloading
-class Answer {
+class Answer
+{
     char ans;
+
 public:
     Answer(char a) : ans(toupper(a)) {}
-    bool operator==(const Answer& other) {
+    bool operator==(const Answer &other)
+    {
         return ans == other.ans;
     }
 };
 
-int main() {
+int main()
+{
     Student s("unknown");
     int user;
     cout << "Welcome to Online Examination System" << endl;
     cout << "1. Admin Login\n2. Student Login\nEnter your choice: ";
     cin >> user;
 
-    if (user == 1) {
+    if (user == 1)
+    {
         Admin admin;
         admin.login();
         cout << "Admin Menu:\n";
-        cout << "1. View Results\n2. Exit\nEnter your choice: ";
+        cout << "1. View Results\n2. Exit\n3. Add Questions \nEnter your choice: ";
         int choice;
         cin >> choice;
-        if (choice == 1) {
+        if (choice == 1)
+        {
             admin.viewResults();
-        } else {
+        }
+        else if (choice == 3)
+        {
+            admin.addQuestion();
+        }
+        else
+        {
             cout << "Exiting...\n";
             return 0;
         }
         return 0;
-    } else if (user == 2) {
+    }
+    else if (user == 2)
+    {
         // Student Login
         string studentName;
         cout << "Enter your name (single word): ";
         cin >> studentName;
-        s =  Student(studentName);
+        s = Student(studentName);
         s.login();
-    } else {
+    }
+    else
+    {
         cout << "Invalid choice!" << endl;
     }
     // Creating the quiz (MCQs only)
-    vector<Question*> quiz;
+    vector<Question *> quiz;
+    // push_back for Output
     quiz.push_back(new MCQ("Q1: What is 2 + 2?\nA) 3\nB) 4\nC) 5", 'B'));
     quiz.push_back(new MCQ("Q2: Capital of France?\nA) London\nB) Paris\nC) Rome", 'B'));
     quiz.push_back(new MCQ("Q3: Which one is a programming language?\nA) Snake\nB) Python\nC) Cobra", 'B'));
@@ -127,7 +190,8 @@ int main() {
     char userInput;
     int score = 0;
 
-    for (auto q : quiz) {
+    for (auto q : quiz)
+    {
         q->ask();
         cout << "Your answer: ";
         cin >> userInput;
@@ -135,28 +199,33 @@ int main() {
         Answer userAns(userInput);
         Answer correctAns(q->getCorrectAnswer());
 
-        if (userAns == correctAns) {
+        if (userAns == correctAns)
+        {
             cout << "Correct!\n\n";
             score++;
-        } else {
+        }
+        else
+        {
             cout << "Wrong!\n\n";
         }
     }
 
     // Save result to file
     ofstream outFile("data/score.txt", ios::app);
-    if (!outFile) {
+    if (!outFile)
+    {
         cerr << "Error opening file for writing." << endl;
         return 1;
     }
     outFile << "Student: " << s.name << endl;
-    outFile << "Score: " << score << " out of " << quiz.size() << "."<< endl;
+    outFile << "Score: " << score << " out of " << quiz.size() << "." << endl;
     outFile.close();
 
     cout << "Your score has been saved to score.txt\n";
 
     // Free memory because we use new
-    for (auto q : quiz) {
+    for (auto q : quiz)
+    {
         delete q;
     }
 
