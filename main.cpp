@@ -132,6 +132,7 @@ int main()
         if (choice == 1)
         {
             admin.viewResults();
+            system("pause");
         }
         else
         {
