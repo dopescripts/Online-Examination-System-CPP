@@ -51,36 +51,6 @@ public:
             cout << "-------------------" << endl;
         }
     }
-    void addQuestion()
-    {
-        // Add question functionality can be implemented here
-        cout << "Enter a new question: \n";
-        string question;
-        cin.ignore(); // Ignore the newline character left in the buffer
-        getline(cin, question);
-        cout << "Enter the correct answer (A/B/C)(Three options accordingly): " << endl;
-        // Read three options
-        string questionOptions[3];
-        cin.ignore(); // Ignore the newline character left in the buffer
-        for (int i = 0; i < 3; i++)
-        {
-            cin.ignore(); // Ignore the newline character left in the buffer
-            cout << "Option: ";
-            getline(cin, questionOptions[i]);
-        }
-        ofstream outFile("data/questions.txt", ios::app);
-        if (!outFile)
-        {
-            cerr << "Error opening file for writing." << endl;
-            return;
-        }
-        // Write question to file
-        outFile << question << endl;
-        outFile << "A) " << questionOptions[0] << endl;
-        outFile << "B) " << questionOptions[1] << endl;
-        outFile << "C) " << questionOptions[2] << endl;
-        outFile.close();
-    }
 };
 
 // Student Class
@@ -148,16 +118,12 @@ int main()
         Admin admin;
         admin.login();
         cout << "Admin Menu:\n";
-        cout << "1. View Results\n2. Exit\n3. Add Questions \nEnter your choice: ";
+        cout << "1. View Results\n2. Exit\nEnter your choice: ";
         int choice;
         cin >> choice;
         if (choice == 1)
         {
             admin.viewResults();
-        }
-        else if (choice == 3)
-        {
-            admin.addQuestion();
         }
         else
         {
